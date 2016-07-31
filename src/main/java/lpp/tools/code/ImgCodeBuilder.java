@@ -114,6 +114,8 @@ public class ImgCodeBuilder {
         Random random = new Random();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
+
+        // 填充背景颜色
         g.setColor(bckColor[random.nextInt(bckColor.length)]);
         g.fillRect(0, 0, width, height);
 
@@ -135,10 +137,10 @@ public class ImgCodeBuilder {
             }
         }
 
+        // 写入验证码值
         int fontSize = height - 18;
         Font font = new Font("Arial", Font.PLAIN, fontSize);
         g.setFont(font);
-
         int verifySize = value.length();
         char[] chars = value.toCharArray();
         for (int i = 0; i < verifySize; i++)
