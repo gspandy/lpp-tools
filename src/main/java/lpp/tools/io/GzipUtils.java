@@ -83,6 +83,7 @@ public abstract class GzipUtils {
      * @return
      */
     public static byte[] decompress(byte[] src) throws IOException {
+        if (src == null) { return null; }
         GZIPInputStream gIn = new GZIPInputStream(new ByteArrayInputStream(src));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try
