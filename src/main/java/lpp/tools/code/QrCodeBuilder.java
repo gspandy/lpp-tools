@@ -27,12 +27,11 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 
 /**
- * 实现描述：二维码构建器
+ * 实现描述：可控制大小但不能控制padding的二维码构建器
  * @author lipanpan
  * @time 2016年8月3日
  */
-public class QrCodeBuilder
-{
+public class QrCodeBuilder {
 
     protected final Logger log = Logger.getLogger(getClass());
 
@@ -57,80 +56,66 @@ public class QrCodeBuilder
     /** 二维码写入内容 */
     protected String content = null;
 
-    public Integer getWidth()
-    {
+    public Integer getWidth() {
         return width;
     }
 
-    public QrCodeBuilder setWidth(Integer width)
-    {
+    public QrCodeBuilder setWidth(Integer width) {
         this.width = width;
         return this;
     }
 
-    public Integer getHeight()
-    {
+    public Integer getHeight() {
         return height;
     }
 
-    public QrCodeBuilder setHeight(Integer height)
-    {
+    public QrCodeBuilder setHeight(Integer height) {
         this.height = height;
         return this;
     }
 
-    public Integer getBgColor()
-    {
+    public Integer getBgColor() {
         return bgColor;
     }
 
-    public QrCodeBuilder setBgColor(Integer bgColor)
-    {
+    public QrCodeBuilder setBgColor(Integer bgColor) {
         this.bgColor = bgColor;
         return this;
     }
 
-    public Integer getPointColor()
-    {
+    public Integer getPointColor() {
         return pointColor;
     }
 
-    public QrCodeBuilder setPointColor(Integer pointColor)
-    {
+    public QrCodeBuilder setPointColor(Integer pointColor) {
         this.pointColor = pointColor;
         return this;
     }
 
-    public ImgFormat getFormat()
-    {
+    public ImgFormat getFormat() {
         return format;
     }
 
-    public QrCodeBuilder setFormat(ImgFormat format)
-    {
+    public QrCodeBuilder setFormat(ImgFormat format) {
         this.format = format;
         return this;
     }
 
-    public String getContent()
-    {
+    public String getContent() {
         return content;
 
     }
 
-    public QrCodeBuilder setContent(String content)
-    {
+    public QrCodeBuilder setContent(String content) {
         this.content = content;
         return this;
     }
 
-    public String getCharset()
-    {
+    public String getCharset() {
         return charset;
     }
 
-    public QrCodeBuilder setCharset(String charset)
-    {
+    public QrCodeBuilder setCharset(String charset) {
         this.charset = charset;
         return this;
     }
@@ -140,8 +125,7 @@ public class QrCodeBuilder
      * @param matrix
      * @return
      */
-    protected BufferedImage toBufferedImage(BitMatrix matrix)
-    {
+    protected BufferedImage toBufferedImage(BitMatrix matrix) {
         int width = matrix.getWidth();
         int height = matrix.getHeight();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -160,8 +144,7 @@ public class QrCodeBuilder
      * @param config
      * @return
      */
-    public byte[] build()
-    {
+    public byte[] build() {
         try
         {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -172,8 +155,7 @@ public class QrCodeBuilder
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             ImageIO.write(im, format.toString(), output);
             return output.toByteArray();
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             log.error("QrCodeBuilder build error", e);
         }
@@ -185,13 +167,9 @@ public class QrCodeBuilder
      * @param out
      * @param isClose 是否关闭out
      */
-    public void build(OutputStream out, boolean isClose)
-    {
+    public void build(OutputStream out, boolean isClose) {
         byte[] data = build();
-        if (data == null)
-        {
-            return;
-        }
+        if (data == null) { return; }
         ByteArrayInputStream in = null;
         try
         {
@@ -202,12 +180,10 @@ public class QrCodeBuilder
             {
                 out.write(buf, 0, len);
             }
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             log.error("QrCodeBuilder build error", e);
-        }
-        finally
+        } finally
         {
             StreamUtils.close(in);
             if (isClose)
@@ -221,18 +197,13 @@ public class QrCodeBuilder
      * 生成二维码并写入文件
      * @param file
      */
-    public void build(String filePath)
-    {
+    public void build(String filePath) {
         byte[] data = build();
-        if (filePath == null || data == null)
-        {
-            return;
-        }
+        if (filePath == null || data == null) { return; }
         try
         {
             FileUtils.write(filePath, data);
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             log.error("QrCodeBuilder build error", e);
         }
