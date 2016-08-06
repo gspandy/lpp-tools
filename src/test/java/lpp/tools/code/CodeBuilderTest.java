@@ -36,7 +36,7 @@ public class CodeBuilderTest {
         System.out.println("testQrCodeBuilder start......");
         QrCodeBuilder builder = new QrCodeBuilder();
         final String content = "https://www.pandan.ren/";
-        builder.setWidth(89).setHeight(89).setFormat(ImgFormat.PNG).setContent(content).setCharset("utf-8")
+        builder.setWidth(50).setHeight(50).setFormat(ImgFormat.PNG).setContent(content).setCharset("utf-8")
             .build("C:\\Users\\lipanpan\\Desktop\\qr.png");
         System.out.println("testQrCodeBuilder end......");
     }
@@ -46,7 +46,7 @@ public class CodeBuilderTest {
         System.out.println("testQrCodePaddingBuilder start......");
         QrCodePaddingBuilder builder = new QrCodePaddingBuilder();
         final String content = "https://www.pandan.ren/";
-        builder.setPadding(5).setWidth(89).setHeight(89).setFormat(ImgFormat.PNG).setContent(content)
+        builder.setPadding(5).setWidth(50).setHeight(50).setFormat(ImgFormat.PNG).setContent(content)
             .setCharset("utf-8").build("C:\\Users\\lipanpan\\Desktop\\qrpadding.png");
         System.out.println("testQrCodePaddingBuilder end......");
     }

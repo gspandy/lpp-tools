@@ -120,9 +120,8 @@ public class QrCodePaddingBuilder extends QrCodeBuilder {
 
             // 控制二维码padding
             outputWidth = outputWidth - 2 * (leftPadding - padding);
-            leftPadding = padding;
             outputHeight = outputHeight - 2 * (topPadding - padding);
-            topPadding = padding;
+            leftPadding = topPadding = padding;
 
             BitMatrix output = new BitMatrix(outputWidth, outputHeight);
 
