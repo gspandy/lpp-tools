@@ -24,7 +24,7 @@ public class CodeParserTest {
     @Test
     public void testQrCodeParser() throws IOException {
         System.out.println("testQrCodeParser start......");
-        QrCodeParser parser = new QrCodeParser("C:\\Users\\lipanpan\\Desktop\\qr.png");
+        QrCodeParser parser = new QrCodeParser("C:\\Users\\lipanpan\\Desktop\\qrlogo.png");
         System.out.println("testQrCodeParser result = " + parser.setCharset("utf-8").parse());
     }
 }
