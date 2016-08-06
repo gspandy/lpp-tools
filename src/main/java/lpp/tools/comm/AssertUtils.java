@@ -15,12 +15,20 @@ package lpp.tools.comm;
 /** 功能描述：断言工具类 */
 public abstract class AssertUtils {
 
-    public void isNull(Object obj, String throwMsg) {
+    public static void isNull(Object obj, String throwMsg) {
         if (obj == null) { throw new IllegalArgumentException(throwMsg); }
     }
 
-    public void isNull(Object obj) {
+    public static void isNull(Object obj) {
         isNull(obj, "param is null");
+    }
+
+    public static void isBlank(String value) {
+        isBlank(value, "param is null");
+    }
+
+    public static void isBlank(String value, String throwMsg) {
+        if (StringUtils.isBlank(value)) { throw new IllegalArgumentException(throwMsg); }
     }
 
 }
