@@ -50,4 +50,15 @@ public class CodeBuilderTest {
             .setCharset("utf-8").build("C:\\Users\\lipanpan\\Desktop\\qrpadding.png");
         System.out.println("testQrCodePaddingBuilder end......");
     }
+
+    @Test
+    public void testLogoQrCodeBuilder() throws IOException {
+        System.out.println("testLogoQrCodeBuilder start......");
+        LogoQrCodeBuilder builder = new LogoQrCodeBuilder();
+        final String content = "https://www.pandan.ren/";
+        builder.setLogoPath("C:\\Users\\lipanpan\\Desktop\\logo.png").setPadding(5).setWidth(100).setHeight(100)
+            .setFormat(ImgFormat.PNG).setContent(content).setCharset("utf-8")
+            .build("C:\\Users\\lipanpan\\Desktop\\qrlogo.png");
+        System.out.println("testLogoQrCodeBuilder end......");
+    }
 }

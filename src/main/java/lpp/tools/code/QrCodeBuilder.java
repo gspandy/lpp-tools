@@ -25,6 +25,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 /**
  * 实现描述：可控制大小但不能控制padding的二维码构建器
@@ -52,6 +53,12 @@ public class QrCodeBuilder {
 
     /** 内容编解码格式，默认：utf-8 */
     protected String charset = "utf-8";
+
+    /** 二维码生成容错级别默认：L */
+    protected ErrorCorrectionLevel level = ErrorCorrectionLevel.L;
+
+    /** 设置二维码margin 1-4*/
+    protected Integer margin = 4;
 
     /** 二维码写入内容 */
     protected String content = null;
@@ -120,6 +127,24 @@ public class QrCodeBuilder {
         return this;
     }
 
+    public ErrorCorrectionLevel getLevel() {
+        return level;
+    }
+
+    public QrCodeBuilder setLevel(ErrorCorrectionLevel level) {
+        this.level = level;
+        return this;
+    }
+
+    public Integer getMargin() {
+        return margin;
+    }
+
+    public QrCodeBuilder setMargin(Integer margin) {
+        this.margin = margin;
+        return this;
+    }
+
     /***
      * 转换image,后续扩展要加logo可复写此方法
      * @param matrix
@@ -148,8 +173,10 @@ public class QrCodeBuilder {
         try
         {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
             hints.put(EncodeHintType.CHARACTER_SET, charset);
+            hints.put(EncodeHintType.MARGIN, margin);
+            hints.put(EncodeHintType.ERROR_CORRECTION, level);
             BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
             BufferedImage im = toBufferedImage(bitMatrix);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
