@@ -24,6 +24,9 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import lpp.tools.comm.AssertUtils;
+import lpp.tools.io.FileUtils;
+
 /**
  * 功能描述：图片验证码生成器
  * 设计模式：建造者模式
@@ -41,6 +44,8 @@ public class ImgCodeBuilder {
     protected Integer width = DEFAULT_WIDTH;
     /**图片高度*/
     protected Integer height = DEFAULT_HEIGHT;
+    /**待写入内容*/
+    protected String content = null;
     /**图片验证码格式*/
     protected ImgFormat format = DEFAULT_FORMAT;
     /**背景颜色集*/
@@ -65,6 +70,15 @@ public class ImgCodeBuilder {
 
     public ImgCodeBuilder setHeight(Integer height) {
         this.height = height;
+        return this;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public ImgCodeBuilder setContent(String content) {
+        this.content = content;
         return this;
     }
 
@@ -104,13 +118,11 @@ public class ImgCodeBuilder {
         return this;
     }
 
-    /**
-     * 生成验证码
-     * @param value
+    /***
+     * 写入背景色
      * @return
-     * @throws IOException 
      */
-    public byte[] build(String value) throws IOException {
+    protected BufferedImage buildBgImg() throws IOException {
         Random random = new Random();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
@@ -136,13 +148,27 @@ public class ImgCodeBuilder {
                 h = h + j;
             }
         }
+        return image;
+    }
 
+    /**
+     * 生成验证码
+     * @param value
+     * @return
+     * @throws IOException 
+     */
+    public byte[] build() throws IOException {
+        AssertUtils.isBlank(content, "content can`t blank.");
+        // 构建图片验证码背景色
+        BufferedImage image = buildBgImg();
+        Random random = new Random();
+        Graphics2D g = image.createGraphics();
         // 写入验证码值
         int fontSize = height - 18;
         Font font = new Font("Arial", Font.PLAIN, fontSize);
         g.setFont(font);
-        int verifySize = value.length();
-        char[] chars = value.toCharArray();
+        int verifySize = content.length();
+        char[] chars = content.toCharArray();
         for (int i = 0; i < verifySize; i++)
         {
             AffineTransform affine = new AffineTransform();
@@ -158,5 +184,14 @@ public class ImgCodeBuilder {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         ImageIO.write(image, format.toString(), byteOut);
         return byteOut.toByteArray();
+    }
+
+    /***
+     * 保存到指定地址文件
+     * @param filePath
+     * @throws IOException
+     */
+    public void build(String filePath) throws IOException {
+        FileUtils.write(filePath, build());
     }
 }

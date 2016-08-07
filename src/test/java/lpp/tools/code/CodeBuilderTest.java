@@ -16,7 +16,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 import lpp.tools.comm.RandomUtils;
-import lpp.tools.io.FileUtils;
 
 /**
  * 功能描述：各种码单元测试
@@ -27,8 +26,17 @@ public class CodeBuilderTest {
     public void testImgCodeBuilder() throws IOException {
         System.out.println("testImgCodeBuilder start......");
         ImgCodeBuilder builder = new ImgCodeBuilder();
-        FileUtils.write("C:\\Users\\lipanpan\\Desktop\\img.jpeg", builder.build(RandomUtils.getRandomCode(4)));
+        builder.setContent(RandomUtils.getRandomCode(4)).build("C:\\Users\\lipanpan\\Desktop\\img.jpeg");
         System.out.println("testImgCodeBuilder end......");
+    }
+
+    @Test
+    public void testImgCodeBgBuilder() throws IOException {
+        System.out.println("testImgCodeBgBuilder start......");
+        ImgCodeBgBuilder builder = new ImgCodeBgBuilder();
+        builder.setBgImgPath("C:\\Users\\lipanpan\\Desktop\\bg.png").setContent(RandomUtils.getRandomCode(4))
+            .build("C:\\Users\\lipanpan\\Desktop\\imgBg.jpeg");
+        System.out.println("testImgCodeBgBuilder end......");
     }
 
     @Test

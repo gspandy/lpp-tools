@@ -12,6 +12,8 @@
  */
 package lpp.tools.comm;
 
+import java.io.File;
+
 /** 功能描述：断言工具类 */
 public abstract class AssertUtils {
 
@@ -29,6 +31,17 @@ public abstract class AssertUtils {
 
     public static void isBlank(String value, String throwMsg) {
         if (StringUtils.isBlank(value)) { throw new IllegalArgumentException(throwMsg); }
+    }
+
+    public static File isFile(String value) {
+        return isFile(value, "param is invalid file path.");
+    }
+
+    public static File isFile(String value, String throwMsg) {
+        isBlank(value, throwMsg);
+        File file = new File(value);
+        if (!file.exists() || file.isDirectory()) { throw new IllegalArgumentException(throwMsg); }
+        return file;
     }
 
 }
