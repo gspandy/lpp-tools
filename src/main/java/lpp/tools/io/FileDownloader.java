@@ -21,8 +21,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import lpp.tools.comm.StreamUtils;
-
 /** 实现描述：资源文件下载器
  * @author lipanpan
  * @time 2016年7月21日 */

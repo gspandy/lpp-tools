@@ -23,8 +23,6 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 
-import lpp.tools.comm.StreamUtils;
-
 /** 功能描述： 文件工具类 */
 public abstract class FileUtils {
 

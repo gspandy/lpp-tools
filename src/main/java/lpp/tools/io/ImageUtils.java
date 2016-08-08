@@ -10,7 +10,7 @@
 *   修改人：lipanpan
 *   修改内容：
 */
-package lpp.tools.comm;
+package lpp.tools.io;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
 import lpp.tools.code.ImgFormat;
+import lpp.tools.comm.StringUtils;
 
 /**
  * 功能描述：图片工具类

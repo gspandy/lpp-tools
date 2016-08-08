@@ -10,7 +10,7 @@
 *   修改人：lipanpan
 *   修改内容：
 */
-package lpp.tools.comm;
+package lpp.tools.io;
 
 import java.io.Closeable;
 import java.io.IOException;

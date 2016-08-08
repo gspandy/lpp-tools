@@ -8,7 +8,7 @@
  *   修改人：lipanpan
  *   修改内容：
  */
-package lpp.tools.comm;
+package lpp.tools.io;
 
 /**
  * 功能描述：字节操作工具类

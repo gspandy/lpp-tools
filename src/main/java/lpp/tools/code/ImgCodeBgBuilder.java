@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import lpp.tools.comm.AssertUtils;
-import lpp.tools.comm.ImageUtils;
+import lpp.tools.io.ImageUtils;
 
 /**
  * 功能描述：含背景图片验证码

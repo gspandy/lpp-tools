@@ -20,8 +20,6 @@ import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import lpp.tools.comm.StreamUtils;
-
 /**
  * 功能描述：gzip解压缩
  */

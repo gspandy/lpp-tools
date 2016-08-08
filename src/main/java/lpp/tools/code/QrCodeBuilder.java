@@ -16,8 +16,8 @@ import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 
-import lpp.tools.comm.StreamUtils;
 import lpp.tools.io.FileUtils;
+import lpp.tools.io.StreamUtils;
 
 import org.apache.log4j.Logger;
 

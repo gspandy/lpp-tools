@@ -14,6 +14,8 @@ package lpp.tools.comm;
 
 import java.io.IOException;
 
+import lpp.tools.io.ImageUtils;
+
 import org.junit.Test;
 
 /**

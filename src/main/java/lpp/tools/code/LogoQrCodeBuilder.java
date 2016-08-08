@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import lpp.tools.comm.ImageUtils;
+import lpp.tools.io.ImageUtils;
 
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
