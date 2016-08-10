@@ -32,6 +32,14 @@ public abstract class AssertUtils {
     public static void isBlank(String value, String throwMsg) {
         if (StringUtils.isBlank(value)) { throw new IllegalArgumentException(throwMsg); }
     }
+    
+    public static void isTrue(boolean value, String throwMsg) {
+        if (!value) { throw new IllegalArgumentException(throwMsg); }
+    }
+
+    public static void isTrue(boolean value) {
+        isNull(value, "param is not true");
+    }
 
     public static File isFile(String value) {
         return isFile(value, "param is invalid file path.");
