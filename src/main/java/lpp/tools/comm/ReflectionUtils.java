@@ -12,6 +12,7 @@
  */
 package lpp.tools.comm;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -56,6 +57,7 @@ public abstract class ReflectionUtils
         Class<?> searchType = clazz;
         while (!Object.class.equals(searchType) && searchType != null)
         {
+            // 获取类中所有的Field，包括public,protected,private
             Field[] fields = searchType.getDeclaredFields();
             for (Field field : fields)
             {
@@ -64,6 +66,7 @@ public abstract class ReflectionUtils
                     return field;
                 }
             }
+            // 获取父类
             searchType = searchType.getSuperclass();
         }
         return null;
@@ -89,6 +92,12 @@ public abstract class ReflectionUtils
         }
     }
 
+    /***
+     * 获取target对象，目标字段的值
+     * @param field
+     * @param target
+     * @return
+     */
     public static Object getField(Field field, Object target)
     {
         try
@@ -103,11 +112,24 @@ public abstract class ReflectionUtils
         }
     }
 
+    /**
+     * 查询类方法Method(不带参数)
+     * @param clazz
+     * @param name
+     * @return
+     */
     public static Method findMethod(Class<?> clazz, String name)
     {
         return findMethod(clazz, name, new Class[0]);
     }
 
+    /***
+     * 查询类方法Method(含参数类型匹配)
+     * @param clazz
+     * @param name
+     * @param paramTypes
+     * @return
+     */
     public static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes)
     {
         AssertUtils.isNull(clazz, "Class must not be null");
@@ -115,6 +137,7 @@ public abstract class ReflectionUtils
         Class<?> searchType = clazz;
         while (searchType != null)
         {
+            // getMethods()获取类中的所有public方法，getDeclaredMethods()获取public,protected,private方法
             Method[] methods = (searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods());
             for (Method method : methods)
             {
@@ -124,27 +147,104 @@ public abstract class ReflectionUtils
                     return method;
                 }
             }
+            // 获取父类
             searchType = searchType.getSuperclass();
         }
         return null;
     }
 
+    /***
+     * 获取类Class上所有的注解Annotation
+     * @param clazz
+     * @return
+     */
+    public static Annotation[] findClassAnnotation(Class<?> clazz)
+    {
+        AssertUtils.isNull(clazz, "Class must not be null");
+        Class<?> searchType = clazz;
+        return searchType.getAnnotations();
+    }
+
+    /***
+     * 获取类Class上指定类型的注解Annotation
+     * @param clazz
+     * @param annotationClass
+     * @return
+     */
+    public static <A extends Annotation> A findClassAnnotation(Class<?> clazz, Class<A> annotationClass)
+    {
+        AssertUtils.isNull(clazz, "Class must not be null");
+        Class<?> searchType = clazz;
+        return searchType.getAnnotation(annotationClass);
+    }
+
+    /***
+     * 获取字段Field上所有的注解Annotation
+     * @param field
+     * @return
+     */
+    public static Annotation[] findFieldAnnotation(Field field)
+    {
+        AssertUtils.isNull(field, "Field must not be null");
+        Field searchType = field;
+        return searchType.getAnnotations();
+    }
+
+    /***
+     * 获取字段Field上指定类型的注解Annotation
+     * @param field
+     * @param annotationClass
+     * @return
+     */
+    public static <A extends Annotation> A findFieldAnnotation(Field field, Class<A> annotationClass)
+    {
+        AssertUtils.isNull(field, "Field must not be null");
+        Field searchType = field;
+        return searchType.getAnnotation(annotationClass);
+    }
+
+    /***
+     * 获取方法Method上所有的注解Annotation
+     * @param field
+     * @return
+     */
+    public static Annotation[] findMethodAnnotation(Method method)
+    {
+        AssertUtils.isNull(method, "Method must not be null");
+        Method searchType = method;
+        return searchType.getAnnotations();
+    }
+
+    /***
+     * 获取方法Method上指定类型的注解Annotation
+     * @param method
+     * @param annotationClass
+     * @return
+     */
+    public static <A extends Annotation> A findMethodAnnotation(Method method, Class<A> annotationClass)
+    {
+        AssertUtils.isNull(method, "Method must not be null");
+        Method searchType = method;
+        return searchType.getAnnotation(annotationClass);
+    }
+
+    /***
+     * 执行目标对象target中的方法Method(不带参数)
+     * @param method
+     * @param target
+     * @return
+     */
     public static Object invokeMethod(Method method, Object target)
     {
         return invokeMethod(method, target, new Object[0]);
     }
 
-    /**
-     * Invoke the specified {@link Method} against the supplied target object
-     * with the supplied arguments. The target object can be <code>null</code>
-     * when invoking a static {@link Method}.
-     * <p>
-     * Thrown exceptions are handled via a call to
-     * {@link #handleReflectionException}.
-     * @param method the method to invoke
-     * @param target the target object to invoke the method on
-     * @param args the invocation arguments (may be <code>null</code>)
-     * @return the invocation result, if any
+    /***
+     * 执行目标对象target中的方法Method(带参数)
+     * @param method
+     * @param target
+     * @param args
+     * @return
      */
     public static Object invokeMethod(Method method, Object target, Object... args)
     {
@@ -159,29 +259,22 @@ public abstract class ReflectionUtils
         throw new IllegalStateException("Should never get here");
     }
 
-    /**
-     * Invoke the specified JDBC API {@link Method} against the supplied target
-     * object with no arguments.
-     * @param method the method to invoke
-     * @param target the target object to invoke the method on
-     * @return the invocation result, if any
-     * @throws SQLException the JDBC API SQLException to rethrow (if any)
-     * @see #invokeJdbcMethod(java.lang.reflect.Method, Object, Object[])
+    /***
+     * 执行目标对象target中的方法JDBC API Method(不带参数)
+     * @param method
+     * @param target
+     * @return
      */
     public static Object invokeJdbcMethod(Method method, Object target) throws SQLException
     {
         return invokeJdbcMethod(method, target, new Object[0]);
     }
 
-    /**
-     * Invoke the specified JDBC API {@link Method} against the supplied target
-     * object with the supplied arguments.
-     * @param method the method to invoke
-     * @param target the target object to invoke the method on
-     * @param args the invocation arguments (may be <code>null</code>)
-     * @return the invocation result, if any
-     * @throws SQLException the JDBC API SQLException to rethrow (if any)
-     * @see #invokeMethod(java.lang.reflect.Method, Object, Object[])
+    /***
+     * 执行目标对象target中的方法JDBC API Method(带参数)
+     * @param method
+     * @param target
+     * @return
      */
     public static Object invokeJdbcMethod(Method method, Object target, Object... args) throws SQLException
     {
@@ -292,14 +385,11 @@ public abstract class ReflectionUtils
         throw new UndeclaredThrowableException(ex);
     }
 
-    /**
-     * Determine whether the given method explicitly declares the given
-     * exception or one of its superclasses, which means that an exception of
-     * that type can be propagated as-is within a reflective invocation.
-     * @param method the declaring method
-     * @param exceptionType the exception to throw
-     * @return <code>true</code> if the exception can be thrown as-is;
-     *         <code>false</code> if it needs to be wrapped
+    /***
+     * 判断指定访问method是否有声明exceptionType类型的异常
+     * @param method
+     * @param exceptionType
+     * @return
      */
     public static boolean declaresException(Method method, Class<?> exceptionType)
     {
@@ -315,9 +405,10 @@ public abstract class ReflectionUtils
         return false;
     }
 
-    /**
-     * Determine whether the given field is a "public static final" constant.
-     * @param field the field to check
+    /***
+     * 判断字段是否为public static final类型
+     * @param field
+     * @return
      */
     public static boolean isPublicStaticFinal(Field field)
     {
@@ -325,9 +416,10 @@ public abstract class ReflectionUtils
         return (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers));
     }
 
-    /**
-     * Determine whether the given method is an "equals" method.
-     * @see java.lang.Object#equals(Object)
+    /***
+     * 判断方法是否为equals(Object obj)方法
+     * @param method
+     * @return
      */
     public static boolean isEqualsMethod(Method method)
     {
@@ -339,27 +431,30 @@ public abstract class ReflectionUtils
         return (paramTypes.length == 1 && paramTypes[0] == Object.class);
     }
 
-    /**
-     * Determine whether the given method is a "hashCode" method.
-     * @see java.lang.Object#hashCode()
+    /***
+     * 判断方法是否为hashCode()方法
+     * @param method
+     * @return
      */
     public static boolean isHashCodeMethod(Method method)
     {
         return (method != null && method.getName().equals("hashCode") && method.getParameterTypes().length == 0);
     }
 
-    /**
-     * Determine whether the given method is a "toString" method.
-     * @see java.lang.Object#toString()
+    /***
+     * 判断方法是否为toString()方法
+     * @param method
+     * @return
      */
     public static boolean isToStringMethod(Method method)
     {
         return (method != null && method.getName().equals("toString") && method.getParameterTypes().length == 0);
     }
 
-    /**
-     * Determine whether the given method is originally declared by
-     * {@link java.lang.Object}.
+    /***
+     * 判断方法是否为Object内置方法
+     * @param method
+     * @return
      */
     public static boolean isObjectMethod(Method method)
     {
@@ -389,13 +484,9 @@ public abstract class ReflectionUtils
         return CGLIB_RENAMED_METHOD_PATTERN.matcher(renamedMethod.getName()).matches();
     }
 
-    /**
-     * Make the given field accessible, explicitly setting it accessible if
-     * necessary. The <code>setAccessible(true)</code> method is only called
-     * when actually necessary, to avoid unnecessary conflicts with a JVM
-     * SecurityManager (if active).
-     * @param field the field to make accessible
-     * @see java.lang.reflect.Field#setAccessible
+    /***
+     * 设置字段可访问
+     * @param field
      */
     public static void makeAccessible(Field field)
     {
@@ -406,13 +497,9 @@ public abstract class ReflectionUtils
         }
     }
 
-    /**
-     * Make the given method accessible, explicitly setting it accessible if
-     * necessary. The <code>setAccessible(true)</code> method is only called
-     * when actually necessary, to avoid unnecessary conflicts with a JVM
-     * SecurityManager (if active).
-     * @param method the method to make accessible
-     * @see java.lang.reflect.Method#setAccessible
+    /***
+     * 设置方法可访问
+     * @param method
      */
     public static void makeAccessible(Method method)
     {
@@ -423,13 +510,9 @@ public abstract class ReflectionUtils
         }
     }
 
-    /**
-     * Make the given constructor accessible, explicitly setting it accessible
-     * if necessary. The <code>setAccessible(true)</code> method is only called
-     * when actually necessary, to avoid unnecessary conflicts with a JVM
-     * SecurityManager (if active).
-     * @param ctor the constructor to make accessible
-     * @see java.lang.reflect.Constructor#setAccessible
+    /***
+     * 设置构造函数可访问
+     * @param ctor
      */
     public static void makeAccessible(Constructor<?> ctor)
     {
@@ -440,30 +523,23 @@ public abstract class ReflectionUtils
         }
     }
 
-    /**
-     * Perform the given callback operation on all matching methods of the given
-     * class and superclasses.
-     * <p>
-     * The same named method occurring on subclass and superclass will appear
-     * twice, unless excluded by a {@link MethodFilter}.
-     * @param clazz class to start looking at
-     * @param mc the callback to invoke for each method
-     * @see #doWithMethods(Class, MethodCallback, MethodFilter)
+    /***
+     * 访问者模式：遍历clazz中所有方法method,并执行mc逻辑
+     * @param clazz
+     * @param fc
+     * @throws IllegalArgumentException
      */
     public static void doWithMethods(Class<?> clazz, MethodCallback mc) throws IllegalArgumentException
     {
         doWithMethods(clazz, mc, null);
     }
 
-    /**
-     * Perform the given callback operation on all matching methods of the given
-     * class and superclasses (or given interface and super-interfaces).
-     * <p>
-     * The same named method occurring on subclass and superclass will appear
-     * twice, unless excluded by the specified {@link MethodFilter}.
-     * @param clazz class to start looking at
-     * @param mc the callback to invoke for each method
-     * @param mf the filter that determines the methods to apply the callback to
+    /***
+     * 访问者模式：遍历clazz中符合mf过滤规则的Method,并执行mc逻辑
+     * @param clazz
+     * @param mc
+     * @param mf
+     * @throws IllegalArgumentException
      */
     public static void doWithMethods(Class<?> clazz, MethodCallback mc, MethodFilter mf)
         throws IllegalArgumentException
@@ -500,8 +576,7 @@ public abstract class ReflectionUtils
     }
 
     /**
-     * Get all declared methods on the leaf class and all superclasses. Leaf
-     * class methods are included first.
+     * 获取类leafClass及父类中所有的方法
      */
     public static Method[] getAllDeclaredMethods(Class<?> leafClass) throws IllegalArgumentException
     {
@@ -561,23 +636,23 @@ public abstract class ReflectionUtils
         return methods.toArray(new Method[methods.size()]);
     }
 
-    /**
-     * Invoke the given callback on all fields in the target class, going up the
-     * class hierarchy to get all declared fields.
-     * @param clazz the target class to analyze
-     * @param fc the callback to invoke for each field
+    /***
+     * 访问者模式：遍历clazz中所有字段Field,并执行fc逻辑
+     * @param clazz
+     * @param fc
+     * @throws IllegalArgumentException
      */
     public static void doWithFields(Class<?> clazz, FieldCallback fc) throws IllegalArgumentException
     {
         doWithFields(clazz, fc, null);
     }
 
-    /**
-     * Invoke the given callback on all fields in the target class, going up the
-     * class hierarchy to get all declared fields.
-     * @param clazz the target class to analyze
-     * @param fc the callback to invoke for each field
-     * @param ff the filter that determines the fields to apply the callback to
+    /***
+     * 访问者模式：遍历clazz中符合ff过滤规则的Field,并执行fc逻辑
+     * @param clazz
+     * @param fc
+     * @param ff
+     * @throws IllegalArgumentException
      */
     public static void doWithFields(Class<?> clazz, FieldCallback fc, FieldFilter ff) throws IllegalArgumentException
     {
@@ -639,58 +714,41 @@ public abstract class ReflectionUtils
         }, COPYABLE_FIELDS);
     }
 
-    /**
-     * Action to take on each method.
+    /***
+     * 功能描述：方法访问
      */
     public interface MethodCallback
     {
-        /**
-         * Perform an operation using the given method.
-         * @param method the method to operate on
-         */
         void doWith(Method method) throws IllegalArgumentException, IllegalAccessException;
     }
 
-    /**
-     * Callback optionally used to filter methods to be operated on by a method
-     * callback.
+    /***
+     * 功能描述：方法过滤器
      */
     public interface MethodFilter
     {
-        /**
-         * Determine whether the given method matches.
-         * @param method the method to check
-         */
         boolean matches(Method method);
     }
 
-    /**
-     * Callback interface invoked on each field in the hierarchy.
+    /***
+     * 功能描述：字段访问
      */
     public interface FieldCallback
     {
-        /**
-         * Perform an operation using the given field.
-         * @param field the field to operate on
-         */
         void doWith(Field field) throws IllegalArgumentException, IllegalAccessException;
     }
 
-    /**
-     * Callback optionally used to filter fields to be operated on by a field
-     * callback.
+    /***
+     * 功能描述：字段过滤器
      */
     public interface FieldFilter
     {
-        /**
-         * Determine whether the given field matches.
-         * @param field the field to check
-         */
+        /** 过滤规则 */
         boolean matches(Field field);
     }
 
-    /**
-     * Pre-built FieldFilter that matches all non-static, non-final fields.
+    /***
+     * 过滤掉static和final修饰的字段
      */
     public static FieldFilter COPYABLE_FIELDS = new FieldFilter() {
         public boolean matches(Field field)
@@ -700,7 +758,7 @@ public abstract class ReflectionUtils
     };
 
     /**
-     * Pre-built MethodFilter that matches all non-bridge methods.
+     * 返回非Bridge方法的过滤器
      */
     public static MethodFilter NON_BRIDGED_METHODS = new MethodFilter() {
         public boolean matches(Method method)
@@ -709,9 +767,8 @@ public abstract class ReflectionUtils
         }
     };
 
-    /**
-     * Pre-built MethodFilter that matches all non-bridge methods which are not
-     * declared on <code>java.lang.Object</code>.
+    /***
+     * 返回非Bridge方法及非Object中声明的方法过滤器
      */
     public static MethodFilter USER_DECLARED_METHODS = new MethodFilter() {
         public boolean matches(Method method)
