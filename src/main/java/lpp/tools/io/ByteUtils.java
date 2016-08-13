@@ -14,7 +14,7 @@ package lpp.tools.io;
  * 功能描述：字节操作工具类
  * @author lipanpan
  */
-public class ByteUtil {
+public class ByteUtils {
 
     /**
      * 将整数按网络字节序写入字节数组某个位置。

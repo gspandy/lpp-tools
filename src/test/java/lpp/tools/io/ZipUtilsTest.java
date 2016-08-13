@@ -29,6 +29,24 @@ public class ZipUtilsTest {
     public void zipDir() throws IOException {
         ZipUtils.zip("C:/Users/lipanpan/Desktop/JFinal学习");
     }
+    
+    /***
+     * 加密zip文件
+     * @throws IOException
+     */
+    @Test
+    public void encryptZipDir() throws IOException {
+        ZipUtils.encryptZipFile("C:/Users/lipanpan/Desktop/JFinal学习.zip");
+    }
+    
+    /***
+     * 解密zip文件
+     * @throws IOException
+     */
+    @Test
+    public void decryptZipDir() throws IOException {
+        ZipUtils.decryptZipFile("C:/Users/lipanpan/Desktop/JFinal学习.zip");
+    }
 
     /***
      * 压缩文件

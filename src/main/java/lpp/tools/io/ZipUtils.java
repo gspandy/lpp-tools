@@ -155,13 +155,13 @@ public abstract class ZipUtils
             {
                 fos.write(b, 0, len);
             }
-            srcFile.delete();
-            tempFile.renameTo(srcFile);
         }
         finally
         {
             StreamUtils.close(fis);
             StreamUtils.close(fos);
+            srcFile.delete();//只有源文件流关闭之后，才可以对其进行操作，必須放在关闭流之后
+            tempFile.renameTo(srcFile);
         }
     }
 
@@ -188,13 +188,13 @@ public abstract class ZipUtils
             {
                 fos.write(b, 0, len);
             }
-            srcFile.delete();
-            tempFile.renameTo(srcFile);
         }
         finally
         {
             StreamUtils.close(fis);
             StreamUtils.close(fos);
+            srcFile.delete();//只有源文件流关闭之后，才可以对其进行操作，必須放在关闭流之后
+            tempFile.renameTo(srcFile);
         }
     }
 
