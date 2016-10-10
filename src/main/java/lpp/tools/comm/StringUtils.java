@@ -36,6 +36,23 @@ public abstract class StringUtils {
         if (value != null && !value.isEmpty()) { return true; }
         return false;
     }
+    
+    /**
+     * 判断给定的字符串列表是否存在空字符串
+     * @param args
+     * @return
+     */
+    public static boolean isExistEmpty(String... args)
+    {
+        for (String arg : args)
+        {
+            if (isEmpty(arg))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 判断字符串是否为空(null, "" , "  ")
@@ -54,6 +71,23 @@ public abstract class StringUtils {
      */
     public static boolean isNotBlank(String value) {
         if (value != null && !value.trim().isEmpty()) { return true; }
+        return false;
+    }
+    
+    /**
+     * 判断给定的字符串列表是否存在blank字符串
+     * @param args
+     * @return
+     */
+    public static boolean isExistBlank(String... args)
+    {
+        for (String arg : args)
+        {
+            if (isBlank(arg))
+            {
+                return true;
+            }
+        }
         return false;
     }
 
