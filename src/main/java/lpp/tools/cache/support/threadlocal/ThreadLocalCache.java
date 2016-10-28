@@ -19,7 +19,6 @@ public class ThreadLocalCache implements Cache {
 
     public ThreadLocalCache(URL url) {
         this.store = new ThreadLocal<Map<Object, Object>>() {
-
             @Override
             protected Map<Object, Object> initialValue() {
                 return new HashMap<Object, Object>();
