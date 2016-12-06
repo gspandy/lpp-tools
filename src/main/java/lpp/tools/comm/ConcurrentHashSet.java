@@ -16,7 +16,11 @@ import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Spliterator;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * 功能描述：基于ConcurrentHashMap实现的线程安全的ConcurrentHashSet
@@ -60,6 +64,30 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, Seri
 
     public void clear() {
         map.clear();
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super E> filter) {
+        return false;
+    }
+
+    @Override
+    public Stream<E> stream() {
+        return null;
+    }
+
+    @Override
+    public Stream<E> parallelStream() {
+        return null;
+    }
+
+    @Override
+    public void forEach(Consumer<? super E> action) {
+    }
+
+    @Override
+    public Spliterator<E> spliterator() {
+        return null;
     }
 
 }
