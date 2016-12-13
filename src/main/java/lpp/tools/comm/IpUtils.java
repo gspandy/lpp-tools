@@ -1,7 +1,5 @@
 package lpp.tools.comm;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 实现描述：ip工具类
  * @author lipanpan
@@ -10,29 +8,25 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class IpUtils {
 
     /**
-     * 获取客户端真实的IP
-     * @param request
+     * 给定义一串ip列表，判断是否包含指定的ip
+     * @param iplist ip列表 192.168.0.1,192.168.0.5 - 192.168.10.22
+     * @param ip 指定IP 192.168.0.5
+     * @param splitRegex 分隔符,
      * @return
      */
-    public String getRealIp(HttpServletRequest request) {
-        String ipSplit = request.getHeader("X-Forwarded-For");
-        String ip = null;
-        if (!StringUtils.isEmpty(ipSplit)) {
-            ip = ipSplit.split("\\s*,\\s*")[0];
+    public static boolean batchContains(String iplist, String ip, String splitRegex) {
+        if (StringUtils.isEmpty(iplist) || StringUtils.isEmpty(ip)) {
+            return false;
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("X-Real-IP");
+        String[] segmentArray = iplist.split(splitRegex);
+        if (segmentArray != null && segmentArray.length > 0) {
+            for (String segment : segmentArray) {
+                if (contains(segment, ip)) {
+                    return true;
+                }
+            }
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        return ip;
+        return false;
     }
 
     /**
@@ -92,16 +86,12 @@ public abstract class IpUtils {
         ip = ip.trim();
         Long result = 0L;
         String[] ipInArray = ip.split("\\.");
+        long temp;
         for (int i = 3; i >= 0; i--) {
-            long temp = Long.parseLong(ipInArray[3 - i]);
+            temp = Long.parseLong(ipInArray[3 - i]);
             result |= temp << (i * 8);
         }
         return result;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(transIp2Long("192.168.0.5"));
-        System.out.println(contains("192.168.0.1-192.168.10.22", "192.168.0.66"));
     }
 
 }
