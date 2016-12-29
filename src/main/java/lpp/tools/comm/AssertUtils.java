@@ -38,7 +38,7 @@ public abstract class AssertUtils {
     }
 
     public static void isTrue(boolean value) {
-        isNull(value, "param is not true");
+        isTrue(value, "param is not true");
     }
 
     public static File isFile(String value) {
